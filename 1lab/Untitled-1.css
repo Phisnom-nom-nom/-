@@ -1,0 +1,74 @@
+
+@font-face {
+    font-family: pamagiti;
+    src: url(RubikBubbles-Regular.ttf);
+}
+
+body 
+{
+    background: linear-gradient(silver, rgb(95, 87, 145));
+    font-size: 14px;
+    font-family:Apple Chancery, cursive;
+    font-style: italic;
+    margin-left: 300px;
+    margin-right: 300px;
+    text-align:justify;
+}
+h1 
+{
+    font-size: 24px;
+    font-family: pamagiti;
+}
+h2 {
+    font-size: 18px;
+    text-transform: uppercase;
+}
+.avatar 
+{
+    width: 230px;
+    height: 250px;
+    border-radius: 28px;
+    border-color: rgb(49, 47, 62);
+   margin-right: 20px;
+}
+
+table.tbl
+{
+    font-family: "Arial Black", Gadget, sans-serif;
+    border: 2px solid #211930;
+    background-color: #8881a0;
+    width: 100%;
+    height: 200px;
+    text-align: left;
+    border-collapse: collapse;
+} 
+
+.tbl th, .tbl td
+{
+    border: 2px solid #242248;
+    padding: 4px 8px;
+}
+
+.tbl thead th 
+{
+    background: #4d4b65;
+    text-transform: lowercase;
+    text-align:left;
+    font-size: 15px;
+    color: #0b0a0ad8;
+}
+
+  .tbl tbody tr:nth-child(odd) 
+  {
+    background: #655e7a;
+  }
+
+
+.logo
+{
+    WIDTH: 230px;
+    HEIGHT: 230px;
+    margin-left: 20px;
+    margin-bottom: 25px;
+    border-color: rgb(49, 47, 62);
+}
