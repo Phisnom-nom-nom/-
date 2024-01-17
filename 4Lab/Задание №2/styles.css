@@ -1,0 +1,55 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+}
+
+.newton-cradle {
+    display: flex;
+    align-items: flex-end;
+}
+
+.ball {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: black;
+    margin: 0 ;
+    position: relative;
+}
+
+.ball:first-child {
+    animation: swing-left 2s ease-in-out infinite 1.5s;
+}
+
+.ball:last-child {
+    animation: swing-right 2s ease-in-out infinite; 
+}
+
+@keyframes swing-left {
+    0%, 50%, 100% {
+        transform: rotate(0);
+        transform-origin: top right;
+    }
+    25% {
+        transform: rotate(35deg);
+        transform-origin: top right;
+    }
+}
+
+@keyframes swing-right {
+    0%, 100% {
+        transform: rotate(0);
+        transform-origin: top left;
+    }
+    50% {
+        transform: rotate(-35deg);
+        transform-origin: top left;
+    }
+    75% {
+        transform: rotate(0);
+        transform-origin: top left;
+    }
+}
