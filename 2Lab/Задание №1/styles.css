@@ -1,0 +1,42 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.number {
+    display: flex;
+    flex-wrap: wrap;
+    width: 60px; 
+    margin: 0 10px; 
+}
+
+.square, .empty {
+    width: 20px; 
+    height: 20px; 
+    background-color: black; 
+}
+
+.empty {
+    background-color: transparent; 
+}
+
+@media (min-width: 768px) {
+    .square, .empty {
+        width: 30px; 
+        height: 30px; 
+    }
+
+    .number {
+        width: 90px; 
+    }
+}
