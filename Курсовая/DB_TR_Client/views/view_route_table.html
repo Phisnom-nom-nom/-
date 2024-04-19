@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список маршрутов</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="sticky-header">
+    <h2>Список маршрутов</h2>
+    <div class="buttons-container">
+        <button class="addButton">Добавить</button>
+        <button class="editButton" id="editButton" disabled>Редактировать</button>
+        <button class="deleteButton" id="deleteButton" disabled>Удалить</button>
+    </div>
+</div>
+    
+<table id="routeTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<!-- Модальное окно для добавления/редактирования записей -->
+<div id="modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h2 id="formTitle">Добавить маршрут</h2>
+        <form id="addEditForm">
+            <input type="hidden" id="id" name="id">
+            <label for="name">Название:</label>
+            <input type="text" id="name" name="name" required><br><br>
+            <label for="description">Описание:</label>
+            <textarea id="description" name="description" required></textarea><br><br>
+            <label for="price">Цена:</label>
+            <input type="number" id="price" name="price" step="0.01" required><br><br>
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+let selectedRows = [];
+
+document.getElementById('routeTable').addEventListener('click', function(e) {
+    if (e.target.tagName === 'TD') {
+        const currentRow = e.target.parentNode;
+        const rowIndex = selectedRows.indexOf(currentRow);
+        
+        if (rowIndex > -1) {
+            selectedRows.splice(rowIndex, 1);
+            currentRow.classList.remove('selectedRow');
+        } else {
+            selectedRows.push(currentRow);
+            currentRow.classList.add('selectedRow');
+        }
+    }
+
+    // Обновляем состояние кнопок
+    document.getElementById('editButton').disabled = selectedRows.length !== 1;
+    document.getElementById('deleteButton').disabled = selectedRows.length === 0;
+});
+
+
+document.getElementById('deleteButton').addEventListener('click', function() {
+    if (selectedRows.length > 0 && confirm('Вы уверены, что хотите удалить выбранные записи?')) {
+        const ids = selectedRows.map(row => row.children[0].textContent); // Собираем ID выделенных записей
+        deleteRoutes(ids.join(',')); // Преобразуем массив в строку, разделенную запятыми
+    }
+});
+
+function deleteRoutes(ids) {
+    const formData = new FormData();
+    formData.append('ids', ids); // Отправляем строку с ID
+    formData.append('action', 'deleteMultipleRoutes'); // Действие для множественного удаления
+
+    fetch('./DAO/route_DAO.php', { 
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Выбранные записи успешно удалены.');
+            loadRouteList();
+        }
+        if (data.errors) {
+            data.errors.forEach(error => {
+                alert(`Ошибка при удалении записи с ID ${error.id}: ${error.message}`);
+            });
+            loadRouteList();
+        }
+    })
+    .catch(error => console.error('Ошибка при удалении:', error));
+}
+
+document.getElementById('editButton').addEventListener('click', function() {
+    if (selectedRows.length > 1) {
+        alert('Редактировать можно только одну запись.');
+        return;
+    }
+
+    if (selectedRows.length === 1) {
+        const id = selectedRows[0].children[0].textContent;
+        openModal();
+        fetch(`./DAO/route_DAO.php?action=getRouteById&id=${id}`) 
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('id').value = data.id;
+                document.getElementById('name').value = data.name;
+                document.getElementById('description').value = data.description;
+                document.getElementById('price').value = data.price;
+                document.getElementById('formTitle').innerText = 'Редактировать маршрут';
+            })
+            .catch(error => console.error('Ошибка:', error));
+    }
+});
+
+// Обработка нажатия на кнопку "Добавить"
+document.querySelector('.addButton').addEventListener('click', function() {
+    // Очистить для новой записи
+    document.getElementById('id').value = ''; 
+    document.getElementById('name').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('price').value = '';
+    document.getElementById('formTitle').innerText = 'Добавить маршрут';
+    openModal(); // Открыть модальное окно
+});
+
+function loadRouteList() {
+    // Сброс выделенных строк
+    selectedRows = []; // Очищаем массив выделенных строк
+    document.querySelectorAll('#routeTable .selectedRow').forEach(row => {
+        row.classList.remove('selectedRow'); // Убираем класс выделения со всех строк
+    });
+
+    // Обновляем состояние кнопок
+    document.getElementById('editButton').disabled = true;
+    document.getElementById('deleteButton').disabled = true;
+
+    fetch('./DAO/route_DAO.php?action=getAllRoutesJson')
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.getElementById('routeTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = ''; // Очищаем текущее содержимое tbody
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            Object.values(row).forEach(text => {
+                const td = document.createElement('td');
+                td.appendChild(document.createTextNode(text));
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
+function openModal() {
+    document.getElementById('modal').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Добавляем обработчик событий для кнопки закрытия модального окна
+    const closeButton = document.querySelector('.close-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            closeModal();
+        });
+    }
+});
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+
+document.getElementById('addEditForm').addEventListener('submit', function(e) {
+e.preventDefault();
+
+const formData = new FormData(this);
+formData.append('action', formData.get('id') ? 'updateRoute' : 'addRoute');
+
+fetch('./DAO/route_DAO.php', {
+    method: 'POST',
+    body: formData
+})
+.then(response => response.json())
+.then(data => {
+    alert(data.message);
+    if (data.success) {
+        closeModal(); // Закрыть модальное окно
+        loadRouteList(); // Перезагрузить список маршрутов
+    }
+})
+.catch(error => {
+    console.error('Ошибка:', error);
+    closeModal(); // Закрыть модальное окно в случае ошибки
+});
+});
+
+loadRouteList();
+</script>
+
+</body>
+</html>

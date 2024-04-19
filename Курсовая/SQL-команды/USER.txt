@@ -1,0 +1,22 @@
+-- Создание пользователей и назначение паролей
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
+CREATE USER 'pertov'@'localhost' IDENTIFIED BY 'pass123';
+CREATE USER 'sid_mihail'@'localhost' IDENTIFIED BY 'pass456';
+CREATE USER 'kozlov'@'localhost' IDENTIFIED BY 'pass789';
+CREATE USER 'novikov'@'localhost' IDENTIFIED BY 'passabc';
+CREATE USER 'guest'@'localhost' IDENTIFIED BY '';
+
+-- Назначение прав администратору
+GRANT ALL PRIVILEGES ON *.* TO 'admin'@'localhost' WITH GRANT OPTION;
+
+-- Назначение прав для обычных пользователей
+GRANT SELECT, UPDATE ON tr.* TO 'pertov'@'localhost';
+GRANT SELECT, UPDATE ON tr.* TO 'sid_mihail'@'localhost';
+GRANT SELECT, UPDATE ON tr.* TO 'kozlov'@'localhost';
+GRANT SELECT, UPDATE ON tr.* TO 'novikov'@'localhost';
+
+-- Назначение прав для неавторизированных  пользователей
+GRANT SELECT ON tr.routes TO 'guest'@'localhost';
+
+-- Применение изменений
+FLUSH PRIVILEGES;

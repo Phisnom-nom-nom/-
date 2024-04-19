@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список пользователей</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="sticky-header">
+    <h2>Список пользователей</h2>
+    <div class="buttons-container">
+        <button class="addButton">Добавить</button>
+        <button class="editButton" id="editButton" disabled>Редактировать</button>
+        <button class="deleteButton" id="deleteButton" disabled>Удалить</button>
+    </div>
+</div>
+    
+<table id="userTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Логин</th>
+            <th>Пароль</th>
+            <th>Роль</th>
+            <th>Фамилия</th>
+            <th>Имя</th>
+            <th>Отчество</th>
+            <th>Телефон</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<!-- Модальное окно для добавления/редактирования записей -->
+<div id="modal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeModal()">&times;</span>
+        <h2 id="formTitle">Добавить пользователя</h2>
+        <form id="addEditForm">
+            <input type="hidden" id="id" name="id">
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" required><br><br>
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <label for="role">Роль:</label>
+            <select id="role" name="role">
+                <option value="admin">Администратор</option>
+                <option value="regular">Пользователь</option>
+            </select><br><br>
+            <label for="last_name">Фамилия:</label>
+            <input type="text" id="last_name" name="last_name" required><br><br>
+            <label for="first_name">Имя:</label>
+            <input type="text" id="first_name" name="first_name" required><br><br>
+            <label for="middle_name">Отчество:</label>
+            <input type="text" id="middle_name" name="middle_name"><br><br>
+            <label for="phone">Телефон:</label>
+            <input type="text" id="phone" name="phone"><br><br>
+            <button type="submit">Сохранить</button>
+        </form>
+    </div>
+</div>
+
+<script>
+let selectedRows = [];
+
+document.getElementById('userTable').addEventListener('click', function(e) {
+    if (e.target.tagName === 'TD') {
+        const currentRow = e.target.parentNode;
+        const rowIndex = selectedRows.indexOf(currentRow);
+        
+        if (rowIndex > -1) {
+            selectedRows.splice(rowIndex, 1);
+            currentRow.classList.remove('selectedRow');
+        } else {
+            selectedRows.push(currentRow);
+            currentRow.classList.add('selectedRow');
+        }
+    }
+
+    // Обновляем состояние кнопок
+    document.getElementById('editButton').disabled = selectedRows.length !== 1;
+    document.getElementById('deleteButton').disabled = selectedRows.length === 0;
+});
+
+
+// Добавляем обработчик двойного нажатия по заголовку таблицы
+document.querySelector('thead').addEventListener('dblclick', function() {
+    const allRows = document.querySelectorAll('tbody tr');
+    if (selectedRows.length === 0) {
+        // Выделяем все строки, если не одна не была выделена
+        allRows.forEach(row => {
+            if (!selectedRows.includes(row)) {
+                selectedRows.push(row);
+                row.classList.add('selectedRow');
+            }
+        });
+    } else {
+        // Снимаем выделение со всех строк, если уже есть выделенные
+        allRows.forEach(row => {
+            const index = selectedRows.indexOf(row);
+            if (index > -1) {
+                selectedRows.splice(index, 1);
+                row.classList.remove('selectedRow');
+            }
+        });
+    }
+    
+    // Обновляем состояние кнопок
+    document.getElementById('editButton').disabled = selectedRows.length !== 1;
+    document.getElementById('deleteButton').disabled = selectedRows.length === 0;
+});
+
+
+document.getElementById('deleteButton').addEventListener('click', function() {
+    if (selectedRows.length > 0 && confirm('Вы уверены, что хотите удалить выбранные записи?')) {
+        const ids = selectedRows.map(row => row.children[0].textContent); // Собираем ID выделенных записей
+        deleteUsers(ids.join(',')); // Преобразуем массив в строку, разделенную запятыми
+    }
+});
+
+function deleteUsers(ids) {
+    const formData = new FormData();
+    formData.append('ids', ids); // Отправляем строку с ID
+    formData.append('action', 'deleteMultipleUsers'); // Действие для множественного удаления
+
+    fetch('./DAO/user_DAO.php', { 
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Выбранные записи успешно удалены.');
+            loadUserList();
+        }
+        if (data.errors) {
+            data.errors.forEach(error => {
+                alert(`Ошибка при удалении записи с ID ${error.id}: ${error.message}`);
+            });
+            loadUserList();
+        }
+    })
+    .catch(error => console.error('Ошибка при удалении:', error));
+}
+
+document.getElementById('editButton').addEventListener('click', function() {
+    if (selectedRows.length > 1) {
+        alert('Редактировать можно только одну запись.');
+        return;
+    }
+
+    if (selectedRows.length === 1) {
+        const id = selectedRows[0].children[0].textContent;
+        openModal();
+        fetch(`./DAO/user_DAO.php?action=getUserById&id=${id}`) 
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('id').value = data.id;
+                document.getElementById('login').value = data.login;
+                document.getElementById('password').value = data.password;
+                document.getElementById('role').value = data.role;
+                document.getElementById('last_name').value = data.last_name;
+                document.getElementById('first_name').value = data.first_name;
+                document.getElementById('middle_name').value = data.middle_name;
+                document.getElementById('phone').value = data.phone;
+                document.getElementById('formTitle').innerText = 'Редактировать пользователя';
+            })
+            .catch(error => console.error('Ошибка:', error));
+    }
+});
+
+// Обработка нажатия на кнопку "Добавить"
+document.querySelector('.addButton').addEventListener('click', function() {
+    // Очистить для новой записи
+    document.getElementById('id').value = ''; 
+    document.getElementById('login').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('role').value = 'regular';
+    document.getElementById('last_name').value = '';
+    document.getElementById('first_name').value = '';
+    document.getElementById('middle_name').value = '';
+    document.getElementById('phone').value = '';
+    document.getElementById('formTitle').innerText = 'Добавить пользователя';
+    openModal(); // Открыть модальное окно
+});
+
+function loadUserList() {
+    // Сброс выделенных строк
+    selectedRows = []; // Очищаем массив выделенных строк
+    document.querySelectorAll('#userTable .selectedRow').forEach(row => {
+        row.classList.remove('selectedRow'); // Убираем класс выделения со всех строк
+    });
+
+    // Обновляем состояние кнопок
+    document.getElementById('editButton').disabled = true;
+    document.getElementById('deleteButton').disabled = true;
+
+    fetch('./DAO/user_DAO.php?action=getAllUsersJson')
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.getElementById('userTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = ''; // Очищаем текущее содержимое tbody
+        data.forEach(row => {
+            const tr = document.createElement('tr');
+            Object.values(row).forEach(text => {
+                const td = document.createElement('td');
+                td.appendChild(document.createTextNode(text));
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
+function openModal() {
+    document.getElementById('modal').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Добавляем обработчик событий для кнопки закрытия модального окна
+    const closeButton = document.querySelector('.close-button');
+    if (closeButton) {
+        closeButton.addEventListener('click', function() {
+            closeModal();
+        });
+    }
+});
+
+function closeModal() {
+    document.getElementById('modal').style.display = 'none';
+}
+
+
+document.getElementById('addEditForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    formData.append('action', formData.get('id') ? 'updateUser' : 'addUser');
+    
+    fetch('./DAO/user_DAO.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        if (data.success) {
+            closeModal(); // Закрыть модальное окно
+            loadUserList(); // Перезагрузить список пользователей
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        closeModal(); // Закрыть модальное окно в случае ошибки
+    });
+});
+
+loadUserList();
+</script>
+
+</body>
+</html>
+

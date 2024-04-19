@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои маршруты</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="sticky-header">
+    <h2>Мои маршруты</h2>
+    <h2></h2>
+</div>
+    
+<table id="myRouteTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Цена</th>
+            <th>Дата покупки</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script>
+function loadMyRoutes() {
+    fetch('../DAO/user_route_DAO.php?action=getUserRoutesByUserId')
+    .then(response => response.json())
+    .then(data => {
+        const tableBody = document.getElementById('myRouteTable').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+        data.forEach(route => {
+            const tr = document.createElement('tr');
+            Object.values(route).forEach(value => {
+                const td = document.createElement('td');
+                td.textContent = value;
+                tr.appendChild(td);
+            });
+            tableBody.appendChild(tr);
+        });
+    })
+    .catch(error => console.error('Ошибка:', error));
+}
+
+loadMyRoutes();
+</script>
+
+</body>
+</html>

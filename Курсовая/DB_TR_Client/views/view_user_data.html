@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование данных пользователя</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="form-container">
+    <div id="sessionData"></div>
+    <h2>Редактирование данных пользователя</h2>
+    <form id="editUserDataForm">
+        <input type="hidden" id="id" name="id">
+        <div class="form-group">
+            <label for="login">Логин:</label>
+            <input type="text" id="login" name="login" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" id="password" name="password" required readonly>
+        </div>
+        <div class="form-group">
+            <label for="last_name">Фамилия:</label>
+            <input type="text" id="last_name" name="last_name" required>
+        </div>
+        <div class="form-group">
+            <label for="first_name">Имя:</label>
+            <input type="text" id="first_name" name="first_name" required>
+        </div>
+        <div class="form-group">
+            <label for="middle_name">Отчество:</label>
+            <input type="text" id="middle_name" name="middle_name">
+        </div>
+        <div class="form-group">
+            <label for="phone">Телефон:</label>
+            <input type="text" id="phone" name="phone" required>
+        </div>
+        <button type="submit">Сохранить изменения</button>
+    </form>
+</div>
+
+<script>
+    function fillFormData() {
+        fetch(`../DAO/user_DAO.php?action=getUserByIdSession&id`) 
+        .then(response => response.json())
+        .then(data => {
+            if (!data.error) {
+                document.getElementById('id').value = data.id;
+                document.getElementById('login').value = data.login;
+                document.getElementById('password').value = data.password;
+                document.getElementById('last_name').value = data.last_name;
+                document.getElementById('first_name').value = data.first_name;
+                document.getElementById('middle_name').value = data.middle_name;
+                document.getElementById('phone').value = data.phone;
+            } else {
+                console.error('Пользователь не найден:', data.error);
+            }
+        })
+        .catch(error => console.error('Ошибка при получении данных пользователя:', error));
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        fillFormData();
+
+        document.getElementById('editUserDataForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            formData.append('action', 'updateUser'); 
+
+            fetch('../DAO/user_DAO.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Данные пользователя успешно обновлены.');
+                } else {
+                    alert('Произошла ошибка при обновлении данных пользователя.');
+                }
+            })
+            .catch(error => console.error('Ошибка:', error));
+        });
+    });
+
+</script>
+</body>
+</html>
