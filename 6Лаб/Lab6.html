@@ -1,0 +1,188 @@
+<html>
+<head>
+<title>Заявление о заключении брака</title>
+<h1 align="center">Заявление о заключении брака</h1>
+<h2 align="center">(заполняется лицами, вступающими в брак)</h2>
+<link rel=stylesheet type="text/css" href="normalize.css">
+<link rel=stylesheet type="text/css" href="1.css">
+</head>
+<script src="1.js"></script>
+<body>
+<div style="
+   	width: 1400px;
+   	text-align: justify;
+   	padding: 8px 100px 8px 300px;
+">
+<h3>Сведения о лицах, вступающих в брак:</h3>
+</div>
+<div style="
+   	width: 1100px;
+   	text-align: justify;
+   	padding: 10px 100px 10px 300px;
+">
+<form>
+<form action="" method="post" name="reg_form" class="reg-form" id="reg_form">
+<table width="1400" border="1">
+<tr>
+<th> </th>
+<th>Он</th>
+<th>Она</th>
+</tr>
+<tr>
+<th>Фамилия</th>
+<td><label><input type="text" name="surname" id="surname" required></label></td>
+<td><label><input type="text" name="surname" id="surname" required></label></td>
+</tr>
+<tr>
+<th>Имя</th>
+<td><label><input type="text" name="name" id="name" required></label></td>
+<td><label><input type="text" name="name" id="name" required></label></td>
+</tr>
+<tr>
+<th>Отчество</th>
+<td><label><input type="text" required></label></td>
+<td><label><input type="text" required></label></td>
+</tr>
+<tr>
+<th>Дата рождения</th>
+<td><label><input type="date" name="date" required></label></td>
+<td><label><input type="date" name="date" required></label></td>
+</tr>
+<tr>
+<th>Место рождения</th>
+<td><label for="citySelect" name="city">Выберите город:</label>
+<select id="citySelect">	
+	<option value="Красноярск">Красноярск</option>
+  	<option value="Москва">Москва</option>
+  	<option value="Санкт-Петербург">Санкт-Петербург</option>
+  	<option value="Новосибирск">Новосибирск</option>
+  	<option value="Владивосток">Владивосток</option>
+	<option value="Екатеринбург">Екатеринбург</option>
+	<option value="Краснодар">Краснодар</option>
+	<option value="Астрахань">Астрахань</option>
+</select></td>
+<td><label for="citySelect name="city">Выберите город:</label>
+<select id="citySelect">
+  	<option value="Красноярск">Красноярск</option>
+  	<option value="Москва">Москва</option>
+  	<option value="Санкт-Петербург">Санкт-Петербург</option>
+  	<option value="Новосибирск">Новосибирск</option>
+  	<option value="Владивосток">Владивосток</option>
+	<option value="Екатеринбург">Екатеринбург</option>
+	<option value="Краснодар">Краснодар</option>
+	<option value="Астрахань">Астрахань</option>
+</select></td>
+</tr>
+<tr>
+<th>Гражданство</th>
+<td><label><input type="text" name="graz" id="graz" required></label></td>
+<td><label><input type="text" name="graz" id="graz" required></label></td>
+</tr>
+<tr>
+<th>Национальность</th>
+<td><label><input type="text" name="nation" id="nation" required></label></td>
+<td><label><input type="text" name="nation" id="nation" required></label></td>
+</tr>
+<tr>
+<th>Образование (отметить галочкой)</th>
+<td><form action="handler.php">
+<p>Профессиональное:</p>
+<p><input type="checkbox" id="высшее" name="высшее" checked />
+<label for="высшее">высшее</label></p>
+<p><input type="checkbox" id="неполное высшее" name="неполное высшее" checked />
+<label for="высшее">неполное высшее</label></p>
+<p><input type="checkbox" id="среднее" name="среднее" checked />
+<label for="высшее">среднее</label></p>
+<p><input type="checkbox" id="начаьное" name="начальное" checked />
+<label for="высшее">начальное</label></p>
+<p>Общее:</p>
+<p><input type="checkbox" id="среднее (полное)" name="среднее (полное)" checked />
+<label for="высшее">среднее (полное)</label></p>
+<p><input type="checkbox" id="основное" name="основное" checked />
+<label for="высшее">основное</label></p>
+<p><input type="checkbox" id="начальное" name="начальное" checked />
+<label for="высшее">начальное</label></p>
+<p><input type="checkbox" id="не имею" name="не имею" checked />
+<label for="высшее">не имею</label></p>
+<p>Профессиональное:</p>
+<p><input type="checkbox" id="vis" name="obr" />
+<label for="высшее">высшее</label></p>
+<p><input type="checkbox" id="nvis" name="obr" />
+<label for="высшее">неполное высшее</label></p>
+<p><input type="checkbox" id="sr" name="obr" />
+<label for="высшее">среднее</label></p>
+<p><input type="checkbox" id="n" name="obr" />
+<label for="высшее">начальное</label></p>
+<p>Общее:</p>
+<p><input type="checkbox" id="srp" name="obr2" />
+<label for="высшее">среднее (полное)</label></p>
+<p><input type="checkbox" id="os" name="obr2" />
+<label for="высшее">основное</label></p>
+<p><input type="checkbox" id="nach" name="obr2" />
+<label for="высшее">начальное</label></p>
+<p><input type="checkbox" id="nm" name="obr2" />
+<label for="высшее">не имею</label></p>
+</form></td>
+<td><form action="handler.php">
+<p>Профессиональное:</p>
+<p><input type="checkbox" id="vis" name="obr" />
+<label for="высшее">высшее</label></p>
+<p><input type="checkbox" id="nvis" name="obr" />
+<label for="высшее">неполное высшее</label></p>
+<p><input type="checkbox" id="sr" name="obr" />
+<label for="высшее">среднее</label></p>
+<p><input type="checkbox" id="n" name="obr" />
+<label for="высшее">начальное</label></p>
+<p>Общее:</p>
+<p><input type="checkbox" id="srp" name="obr2" />
+<label for="высшее">среднее (полное)</label></p>
+<p><input type="checkbox" id="os" name="obr2" />
+<label for="высшее">основное</label></p>
+<p><input type="checkbox" id="nach" name="obr2" />
+<label for="высшее">начальное</label></p>
+<p><input type="checkbox" id="nm" name="obr2" />
+<label for="высшее">не имею</label></p>
+</form></td>
+<td><form action="handler.php">
+</form></td>
+</tr>
+<tr>
+<th>Документ, удостоверяющий личность</th>
+<td><p>Наименование: <input type="text" name="names" id="names" autofocus required ></p>
+    	<p>Серия:   <input type="text" name="series" id="series" size="4" required></p>
+	<p>Номер:   <input type="text" name="numbers" id="numbers" size="6" required></p>
+    	<p>Кем выдан:   <input type="text" name="who" id="who" required></p>
+    	<p>Дата выдачи: <input type="date" name="date" required></p></td>
+<td><p>Наименование: <input type="text" name="names" id="names" autofocus required ></p>
+   	<p>Серия: <input type="text" name="series" id="series" size="4" required></p>
+   	<p>Номер: <input type="text" name="numbers" id="numbers" size="6" required></p>
+	<p>Кем выдан: <input type="text" name="who" id="who" required></p>
+	<p>Дата выдачи: <input type="date" name="date" required></p></td>
+</tr>
+<tr>
+<th>Семейное положение до вступления в брак (отметьте что-то одно)</th>
+<td><form action="handler.php" name="family" id="family">
+<p><input type="radio" name="f" id="a" value="в браке не состоял"> в браке не состоял </p>
+<p><input type="radio" name="f" id="b" value="разведен"> разведен </p>
+<p><input type="radio" name="f" id="c" value="вдовец"> вдовец</p>
+</form></td>
+<td><form action="handler.php" name="family" id="family">
+<p><input type="radio" name="f" id="a" value="в браке не состояла"> в браке не состояла </p>
+<p><input type="radio" name="f" id="b" value="разведена"> разведена </p>
+<p><input type="radio" name="f" id="c" value="вдова"> вдова </p>
+</form></td>
+<tr>
+<th>
+<p>Количество общих детей, не достигших совершеннолетия: <th colspan="2"><input type="kids" required></p></th>
+</th>
+</tr>
+<tr>
+</tr>
+</table>
+<p>Введите ваш E-mail: <input type="email" name="email" id="email" required></p>
+<p>Введите ваш номер телефона: <input type="tel" name="phone" id="phone" required></p>
+<p><input type="submit" value="Подать заявку на обработку"></p>
+</form>
+</div>
+</body>
+</html>
