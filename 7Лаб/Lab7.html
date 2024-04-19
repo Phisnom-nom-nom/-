@@ -1,0 +1,101 @@
+<html> 
+<head> 
+<title>Калькулятор</title> 
+<style> 
+body { 
+	font-family: Arial, 
+	sans-serif; 
+	background-color: #f4f4f4; 
+} 
+.calculator { 
+	width: 340px; 
+	margin: 50px auto; 
+	padding: 20px; 
+	background-color: #f9f9f9; 
+	border-radius: 5px; 
+	box-shadow: 0px 0px 10px 0px #000000; 
+} 
+.result { 
+	text-align: right; 
+	font-size: 24px; 
+	margin-bottom: 20px;
+	padding: 10px; 
+	background-color: #fff; 
+	border: none; 
+	border-radius: 5px; 
+} 
+button { 
+	width: 70px; 
+	height: 50px; 
+	margin: 5px; 
+	font-size: 18px; 
+	border: none; 
+	border-radius: 5px; 
+	cursor: pointer; 
+} 
+.function { 
+	background-color: #4285f4; 
+	color: #fff; 
+} 
+.number { 
+	background-color: #e0e0e0; 
+} 
+</style> 
+</head> 
+<body> 
+<div class="calculator"> 
+<input type="text" class="result" id="result" disabled> 
+<button class="function" onclick="clearAll()">AC</button> 
+<button class="function" onclick="clearEntry()">CE</button> 
+<button class="function" onclick="backspace()">&#8592;</button> 
+<button class="function" onclick="input('/')">÷</button><br> 
+
+<button class="number" onclick="input('7')">7</button>
+<button class="number" onclick="input('8')">8</button>
+<button class="number" onclick="input('9')">9</button>
+<button class="function" onclick="input('*')">x</button><br>
+
+<button class="number" onclick="input('4')">4</button>
+<button class="number" onclick="input('5')">5</button>
+<button class="number" onclick="input('6')">6</button>
+<button class="function" onclick="input('-')">-</button><br>
+
+<button class="number" onclick="input('1')">1</button>
+<button class="number" onclick="input('2')">2</button>
+<button class="number" onclick="input('3')">3</button>
+<button class="function" onclick="input('+')">+</button><br>
+
+<button class="number" onclick="input('0')">0</button>
+<button class="function" onclick="changeSign()">+/-</button>
+<button class="function" onclick="input('.')">.</button>
+<button class="function" onclick="calculate()">=</button><br>
+
+</div> 
+<script> 
+function input(val) { 
+	document.getElementById('result').value += val; 
+} 
+function clearAll() { 
+	document.getElementById('result').value = ''; 
+} 
+function clearEntry() { 
+	var currentValue = document.getElementById('result').value; 
+	document.getElementById('result').value = currentValue.slice(0, -1); 
+} 
+function backspace() { 
+	var currentValue = document.getElementById('result').value; 
+	document.getElementById('result').value = currentValue.slice(0, -1); 
+} 
+function changeSign() { 
+	var currentValue = document.getElementById('result').value; 
+	document.getElementById('result').value = eval(currentValue * -1); 
+} 
+function calculate() { 
+	var currentValue = document.getElementById('result').value; 
+	document.getElementById('result').value = eval(currentValue); 
+} 
+</script> 
+</body> 
+</html>
+
+
