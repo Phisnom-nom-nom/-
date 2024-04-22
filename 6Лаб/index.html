@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Формуляр читателя в библиотеке</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Формуляр читателя в библиотеке</h1>
+		<form action="/submit" method="post">
+			<div class="form-group">
+				<label for="name">Имя:</label>
+				<input type="text" id="name" name="name" placeholder="Введите ваше имя">
+			</div>
+
+			<div class="form-group">
+				<label for="email">Email:</label>
+				<input type="email" id="email" name="email" placeholder="Ваш Email">
+			</div>
+
+			<div class="form-group">
+				<label for="phone">Телефон:</label>
+				<input type="tel" id="phone" name="phone" placeholder="Ваш телефон">
+			</div>
+
+			<div class="form-group">
+				<label for="address">Адрес:</label>
+				<input type="text" id="address" name="address" placeholder="Ваш адрес">
+			</div>
+
+			<div class="form-group">
+				<label for="member-since">Член библиотеки с:</label>
+				<input type="date" id="member-since" name="member-since">
+			</div>
+
+			<div class="form-group">
+				<label for="favorite-genre">Любимый жанр:</label>
+				<select id="favorite-genre" name="favorite-genre">
+					<option value="">Выберите жанр</option>
+					<option value="fiction">Художественная литература</option>
+					<option value="non-fiction">Документальная литература</option>
+					<option value="romans">Романы</option>
+				</select>
+			</div>
+
+			<div class="form-group">
+				<input type="submit" value="Отправить">
+			</div>
+		</form>
+	</div>
+</body>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(event) {
+        let hasError = false;
+        event.preventDefault();
+        // Проверка заполненности всех полей
+        document.querySelectorAll('#name, #email, #phone, #address, #member-since, #favorite-genre').forEach(input => {
+            if (!input.value.trim()) {
+                alert('Пожалуйста, заполните поле ' + input.previousElementSibling.innerText);
+                hasError = true;
+            }
+        });
+        // Дополнительная проверка на валидность email
+        const email = document.querySelector('#email');
+        if (email.value && !email.value.includes('@')) {
+            alert('Введите корректный email адрес.');
+            hasError = true;
+        }
+        // Дополнительная проверка на валидность телефона
+        const phone = document.querySelector('#phone');
+        if (phone.value && !/^(\+7|8)\d{10}$/.test(phone.value)) {
+            alert('Введите корректный номер телефона в формате +7xxxxxxxxxx или 8xxxxxxxxxx.');
+            hasError = true;
+        }
+        if (!hasError) {
+            // Формирование текста
+            let formData = 'Форма успешно отправлена!\n\n';
+            formData += 'Имя: ' + document.querySelector('#name').value + '\n';
+            formData += 'Email: ' + document.querySelector('#email').value + '\n';
+            formData += 'Телефон: ' + document.querySelector('#phone').value + '\n';
+            formData += 'Адрес: ' + document.querySelector('#address').value + '\n';
+            formData += 'Член библиотеки с: ' + document.querySelector('#member-since').value + '\n';
+            const genreSelect = document.querySelector('#favorite-genre');
+            formData += 'Любимый жанр: ' + genreSelect.options[genreSelect.selectedIndex].text;
+            alert(formData);
+            // Очистка формы
+            form.reset();
+        }
+    });
+});
+</script>
+</html>

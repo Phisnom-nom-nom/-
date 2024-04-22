@@ -1,0 +1,119 @@
+body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; 
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5dc; 
+}
+
+h1 {
+    width: 100%; 
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem; 
+    color: #8b4513; 
+}
+
+.container {
+    width: 100%;
+    max-width: 500px; 
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+	background: #deb887;
+}
+
+form {
+    width: 100%;
+    max-width: 500px; 
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background: #fff; 
+    border-radius: 15px; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); 
+    color: #f4a460; 
+}
+
+.form-group {
+    margin-bottom: 20px; 
+}
+
+label {
+    margin-bottom: 10px;
+    font-size: 16px; 
+	color: #8b4513;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+input[type="file"],
+input[type="date"], 
+textarea,
+select { 
+    box-sizing: border-box; 
+    width: calc(100% - 16px); 
+    padding: 12px; 
+    margin: 0 auto; 
+    border: 2px solid #a0522d; 
+    background-color: #fff8dc; 
+    border-radius: 8px; 
+    background-color: #fafafa; 
+    transition: border-color 0.3s; 
+}
+
+input[type="submit"] {
+    width: calc(100% - 16px); 
+    padding: 12px;
+    margin: 10px auto; 
+    border: none; 
+    border-radius: 8px;
+    background-color: #a0522d; 
+    color: white;
+    font-weight: bold; 
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s; 
+}
+
+input[type="submit"]:hover {
+    background-color: #8b4513; 
+}
+
+input[type="submit"]:active {
+    transform: translateY(2px); 
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus, 
+textarea:focus,
+select:focus { 
+    border-color: #8b4513; 
+    outline: none;
+}
+
+@media (max-width: 600px) {
+    form {
+        width: 95%;
+        padding: 20px; 
+    }
+
+    label {
+        display: none;
+    }
+
+    input[type="submit"] {
+        width: 100%; 
+	}
+}
